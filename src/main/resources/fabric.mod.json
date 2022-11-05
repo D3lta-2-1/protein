@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "protein",
+  "version": "${version}",
+  "name": "Protein",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/protein/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "client": [
+      "me.verya.protein.client.ProteinClient"
+    ],
+    "main": [
+      "me.verya.protein.Protein"
+    ]
+  },
+  "mixins": [
+    "protein.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}
