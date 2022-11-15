@@ -59,6 +59,7 @@ public class LoginHandler  {
         ByteArrayDataInput in = ByteStreams.newDataInput(buf.getWrittenBytes());
         var game = in.readUTF();
         assert buf.release();
+        //TODO forward the full game ID
         //check if the server can handle the game requested
         var gameId = new Identifier("skywars", game);
         if(!gamesHandler.isGameSupported(gameId))
@@ -66,14 +67,18 @@ public class LoginHandler  {
             handler.disconnect(Text.literal("game unsupported"));
             return;
         }
-        //try to open the game, the player should wait where he's actually connected
-        var future = gamesHandler.openGame(gameId);
-        future.handle((gameSpace, throwable) -> {
-            if(throwable != null)
-                handler.disconnect(Text.literal(throwable.getMessage()));
-            return null; });
-        synchronizer.waitFor(future);
-
+        //get the already opened game, end if there is already game waiting for players
+        var openedGames = gamesHandler.getWaitingGameSpace(gameId);
+        if(openedGames.isEmpty())
+        {
+            //try to open the game if no one opened, the player should wait where he's actually connected
+            var future = gamesHandler.openGame(gameId);
+            future.handle((gameSpace, throwable) -> {
+                if(throwable != null)
+                    handler.disconnect(Text.literal(throwable.getMessage()));
+                return null; });
+            synchronizer.waitFor(future);
+        }
         //memorize where the players want's to be connected
         var accessor = (ServerLoginNetworkHandlerAccessor)handler;
         var gameProfile = accessor.getProfile();
