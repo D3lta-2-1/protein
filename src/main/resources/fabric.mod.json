@@ -10,9 +10,6 @@
   "icon": "assets/protein/icon.png",
   "environment": "server",
   "entrypoints": {
-    "client": [
-      "me.verya.protein.client.ProteinClient"
-    ],
     "main": [
       "me.verya.protein.Protein"
     ]

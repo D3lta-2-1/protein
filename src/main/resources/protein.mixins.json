@@ -1,12 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "me.verya.protein.mixin",
+  "package": "me.verya.protein.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
   ],
+  "server": ["ServerLoginNetworkHandlerAccessor"],
   "injectors": {
     "defaultRequire": 1
   }
